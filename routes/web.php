@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome')->name('home');
+Route::view('/', 'landing')->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::view('login', 'auth.login')->name('login');
@@ -30,4 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', 'Auth\LogoutController')->name('logout');
 
     Route::view('password/confirm', 'auth.passwords.confirm')->name('password.confirm');
+
+    Route::resource('customerImports', 'CustomerImportController');
+
 });
