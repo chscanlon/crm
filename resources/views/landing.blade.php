@@ -4,28 +4,22 @@
 
     <x-sidebar-auth>
 
-        @auth
-
-            <a
-            href="/customerImports/create"
-            class=
-            "
-                font-medium
-                text-indigo-600
-                hover:text-indigo-500
-                focus:outline-none
-                focus:underline
-                transition ease-in-out duration-150
-            "
-            >
-                Customer Import
-            </a>
-
-        @endauth
+    <a
+        href="/customerImports/create"
+        class=
+        "
+            font-medium
+            text-indigo-600
+            hover:text-indigo-500
+            focus:outline-none
+            focus:underline
+            transition ease-in-out duration-150
+        "
+    >
+        Customer Import
+    </a>
 
     </x-sidebar-auth>
-
-
 
 @endsection
 
