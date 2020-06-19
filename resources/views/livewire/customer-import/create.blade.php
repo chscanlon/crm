@@ -1,59 +1,84 @@
-<div class="container mx-auto">
-    <div class="text-2xl font-bold my-4">New Customer Import</div>
+<div>
+    <x-layout.section.header>Import Customer Data</x-layout.section.header>
 
-    <div class="mb-2">Customer data are imported from the Timely Customer List report. The report should be exported
-        from Timely as a csv file and saved. You can then select the saved file using the form below.
-    </div>
+    <x-layout.section.paragraph>
+        Customer data are imported from the Timely Customer List report. Export the Timely report as a csv file. You can then select the saved file using the form below.
+    </x-layout.section.paragraph>
 
-    <form wire:submit.prevent="save" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        @csrf
+    <x-layout.section.form-block-feature>
 
-        <div class=" flex items-end">
-        
-            <div class="">
+        <input type="file" wire:model="customerListReport">
 
-                <label 
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="customerList"
-                >
-                    Select a file to upload
-                </label>
-
-                <input
-                    type="file"
-                    wire:model="timelycust"
-                    class=""
-                    id="customerList"
-                    name="customerList"
-                    placeholder="Select File"
-                >
-                @error('timelycust') <span class="error">{{ $message }}</span> @enderror
-
+        @error('customerListReport')
+            <div class=" mt-4 mx-10 p-4 bg-red-100 rounded-md">
+                <span class=" text-base font-bold">File failed validation : </span><span class="error">{{ $message }}</span>
             </div>
+        @enderror
+
+        @if ($customerListReport And $uploadValidated == 1)
+        <div class="flex items-center mt-4 mx-10 p-4 bg-green-100 rounded-md">
+
+            <div class="">
+                <div class=" text-base font-bold">
+                    File passed vailidation
+                </div>
+                <x-layout.section.no-bullet-list-item>
+                    File Size : {{ round($customerListReport->getSize()/1024) }} kB
+                </x-layout.section.no-bullet-list-item>
+                <x-layout.section.no-bullet-list-item>
+                    File Type : {{ $customerListReport->getMimeType() }}
+                </x-layout.section.no-bullet-list-item>
+                <x-layout.section.no-bullet-list-item>
+                    Rows To Import : {{ $rowsStaged }}
+                </x-layout.section.no-bullet-list-item>
+            </div>
+
+            <x-layout.section.form-submit>
+                Import Now
+            </x-layout.section.form-submit>
+
 
         </div>
 
-        <div>
-            @if ($timelycust)
-            Filename : {{ $timelycust->getClientOriginalName() }} <br/>
-            File Size : {{ round($timelycust->getSize()/1024) }} kB <br/>
-            File Type : {{ $timelycust->getMimeType() }} <br/>
-            Rows To Import : {{ $rowsStaged }} <br/>
+    
+        @endif
 
-            <div class="">
-                <button
-                    type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    Import File
-                </button>       
-            </div>
-            <br/>
-            Rows Imported : {{ $rowsImported }} <br/>
 
-            @endif
+    </x-layout.section.form-block-feature>
+
+
+    Rows Imported : {{ $rowsImported }} <br/>
+    New Customers : {{ count($newCustomers) }} <br/>
+
+    @if (count($newCustomers) >= 1)
+        <div class="my-4">
+
+            <table class="border table-auto">
+                <thead>
+                    <tr>
+                        <th>Timely Customer Id</th>
+                        <th>First Name</th>
+                        <th>Family Name</th>
+                        <th>SMS Number</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($newCustomers as $key => $value)
+                    <tr>
+                        <td> {{$newCustomers[$key]['timely_customer_id']}} </td>
+                        <td> {{$newCustomers[$key]['first_name']}} </td>
+                        <td> {{$newCustomers[$key]['family_name']}} </td>
+                        <td> {{$newCustomers[$key]['sms']}} </td>
+                        <td> {{$newCustomers[$key]['email']}} </td>
+
+                    </tr>
+                    @endforeach
+                </tbody>
+    
+            </table>
+    
         </div>
-
-    </form>
-
+    @endif
 </div>

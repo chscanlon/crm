@@ -16,7 +16,7 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->timestamps();
-                $table->string('timely_status')->comment('Indicates whether the appointment exists (active) or not (deleted) in Timely. A status of matched is used traniently during schedule import');
+                $table->string('timely_status')->comment('Indicates whether the customer exists (active) or not (deleted) in Timely. A status of matched is used transiently during the import process');
                 $table->integer('timely_customer_id')->unique();
                 $table->date('date_added')->nullable($value = true);
                 $table->string('first_name')->default('');
@@ -56,6 +56,8 @@ class CreateCustomersTable extends Migration
                 $table->unsignedDecimal('primary_stylist_service_spend_last18month', 8, 2)->default(0.0);
                 $table->unsignedDecimal('primary_stylist_percent_last18month', 8, 2)->default(0.0);
                 $table->integer('stylist_count_last18month')->default(0);
+
+                $table->index('created_in_import_id');
             }
         );
     }
