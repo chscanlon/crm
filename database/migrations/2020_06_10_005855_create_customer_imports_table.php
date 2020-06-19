@@ -16,6 +16,8 @@ class CreateCustomerImportsTable extends Migration
         Schema::create('customer_imports', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->date('imported_at');
+            $table->integer('item_count');
         });
     }
 

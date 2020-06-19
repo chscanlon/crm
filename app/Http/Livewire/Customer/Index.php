@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Customer;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {

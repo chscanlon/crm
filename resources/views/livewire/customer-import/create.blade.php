@@ -5,7 +5,6 @@
         from Timely as a csv file and saved. You can then select the saved file using the form below.
     </div>
 
-
     <form wire:submit.prevent="save" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @csrf
 
@@ -22,39 +21,38 @@
 
                 <input
                     type="file"
-                    wire:model="upload"
+                    wire:model="timelycust"
                     class=""
                     id="customerList"
                     name="customerList"
                     placeholder="Select File"
                 >
+                @error('timelycust') <span class="error">{{ $message }}</span> @enderror
 
             </div>
+
+        </div>
+
+        <div>
+            @if ($timelycust)
+            Filename : {{ $timelycust->getClientOriginalName() }} <br/>
+            File Size : {{ round($timelycust->getSize()/1024) }} kB <br/>
+            File Type : {{ $timelycust->getMimeType() }} <br/>
+            Rows To Import : {{ $rowsStaged }} <br/>
 
             <div class="">
                 <button
                     type="submit"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
-                    Save
+                    Import File
                 </button>       
             </div>
+            <br/>
+            Rows Imported : {{ $rowsImported }} <br/>
 
-
-        
-        </div>
-
-
-        <div>
-            @if ($upload)
-            Filename : {{ $upload->getFilename() }} <br/>
-            Real Path : {{ $upload->getRealPath() }} <br/>
-            Size : {{ $upload->getSize() }} <br/>
-            Original Filename : {{ $upload->getClientOriginalName() }} <br/>
-            Path : {{ $uploadedPath }} <br/>
             @endif
         </div>
-
 
     </form>
 

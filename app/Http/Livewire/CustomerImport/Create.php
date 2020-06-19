@@ -4,38 +4,40 @@ namespace App\Http\Livewire\CustomerImport;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Timely\DataImport;
 
 class Create extends Component
 {
-
     use WithFileUploads;
 
-    public $upload;
-    public $uploadedPath;
+    public $timelycust;
+    public $rowsStaged;
+    public $importId;
+    public $rowsImported;
 
-    protected function importCustomerList($filepath)
+
+    public function updatedTimelycust()
     {
-        DB::table('customer_imports')->truncate();
+        $this->validate([
+            'timelycust' => 'mimetypes:text/plain|max:1024', // 1MB Max
+        ]);
 
-        $query = "LOAD DATA LOCAL INFILE '../storage/app/".$filepath."'
-                INTO TABLE customer_imports
-                FIELDS TERMINATED BY ','
-                OPTIONALLY ENCLOSED BY '\"'
-                LINES TERMINATED BY '\r\n'
-                IGNORE 2 LINES";
-
-        DB::connection()->getPdo()->exec($query);
-
-        $deleted = DB::table('customer_imports')->where('CustomerId', '=', '')->delete();
-
-        return DB::table('customer_imports')->count();
+        if($this->timelycust->isValid()) {
+            $dataImport = new DataImport;
+            $dataImport->stageCustomers($this->timelycust->getfilename());
+            $this->importId = $dataImport->importId;
+            $this->rowsStaged = $dataImport->rowsStaged;
+        }
     }
 
     public function save()
     {
-        $this->upload->store('customer');
-        $this->uploadedPath = $this->upload->path();
+
+        if($this->timelycust->isValid()) {
+            $dataImport = new DataImport;
+            $this->rowsImported = $dataImport->ImportStagedCustomers($this->importId);
+        }
 
     }
 
