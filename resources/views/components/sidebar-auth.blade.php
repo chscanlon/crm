@@ -22,53 +22,26 @@
                 </form>
             </div>
 
-            <div>
-                <a
-                    href="/"
-                    class=
-                    "
-                        font-medium
-                        text-indigo-600
-                        hover:text-indigo-500
-                        focus:outline-none
-                        focus:underline
-                        transition ease-in-out duration-150
-                    "
-                >
-                        Landing
-                </a>
-            </div>
+            <x-nav.sidebar-link href="/">Landing</x-nav.sidebar-link>
+
+            <x-nav.sidebar-group groupTitle="Data Import">
+                <x-nav.sidebar-link href="/customerImports/create">Customers</x-nav.sidebar-link>
+                <x-nav.sidebar-link href="/scheduleImports/create">Appointments</x-nav.sidebar-link>
+                <x-nav.sidebar-link href="/invoiceImports/create">Invoices</x-nav.sidebar-link>
+            </x-nav.sidebar-group>
+
+            <x-nav.sidebar-group groupTitle="Customer">
+                <x-nav.sidebar-link href="/customer">Customer List</x-nav.sidebar-link>
+            </x-nav.sidebar-group>
 
 
             {{ $slot }}
 
         @else
-            <div>
-                <a
-                    href="{{ route('login') }}"
-                    class=
-                    "
-                        font-medium
-                        text-indigo-600
-                        hover:text-indigo-500
-                        focus:outline-none
-                        focus:underline
-                        transition ease-in-out duration-150
-                    "
-                >
-                    Log in
-                </a>
-            </div>
+            <x-nav.sidebar-link href="/login">Log in</x-nav.sidebar-link>
 
             @if (Route::has('register'))
-                <div class="">
-                    <a
-                        href="{{ route('register') }}"
-                        class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
-                    >
-                        Register
-                    </a>
-                </div>
+                <x-nav.sidebar-link href="/register">Register</x-nav.sidebar-link>
             @endif
 
         @endauth

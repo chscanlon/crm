@@ -21,9 +21,11 @@
 
     <div name="main" class="w-full">
 
-        <div name="main-header" class=" h-20 bg-indigo-200 border-indigo-300 border-b">Header</div>
+        <x-layout.page-header>
+            @yield('page-header')
+        </x-layout.page-header>
 
-        <div name="main-content" class=" px-5 py-10">
+        <div name="main-content">
 
             @yield('content')
 

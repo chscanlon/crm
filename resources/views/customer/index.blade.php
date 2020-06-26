@@ -4,10 +4,12 @@
     <x-sidebar-auth />
 @endsection
 
-@section('page-header')
-    Import Customer Data
-@endsection
-
 @section('content')
-    <livewire:customer-import.create />
+
+    <x-layout.section>
+    
+        <livewire:customer.index />
+
+    </x-layout.section>
+
 @endsection

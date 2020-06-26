@@ -18,8 +18,9 @@ class Create extends Component
     public $uploadValidated;
     public $rowsStaged;
     public $importId;
-    public $rowsImported;
+    public $totalCustomers;
     public $newCustomers = [];
+    public $deletedCustomers = [];
 
     public function mount()
     {
@@ -52,10 +53,14 @@ class Create extends Component
     {
         if($this->uploadValidated == 1) {
             $dataImport = new DataImport;
-            $this->rowsImported = $dataImport->ImportStagedCustomers($this->importId);
+            $this->totalCustomers = $dataImport->ImportStagedCustomers($this->importId);
         }
 
         $this->newCustomers = Customer::where('created_in_import_id', $this->importId)->limit(10)->get()->toArray();
+        $this->deletedCustomers = Customer::where('deleted_in_import_id', $this->importId)->limit(10)->get()->toArray();
+
+        $this->customerListReport = 0;
+        $this->uploadValidated == 0;
         //dd($this->newCustomers);
 
     }

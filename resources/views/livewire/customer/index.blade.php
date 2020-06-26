@@ -1,4 +1,5 @@
 <div>
+    <x-layout.section.header>Customer List</x-layout.section.header>
 
     <table class="mx-auto table-auto border">
 
